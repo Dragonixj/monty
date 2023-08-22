@@ -8,6 +8,8 @@ void push(stack_t **stack, unsigned int line_number)
 {
     int value;
 
+    stack_t *new_node;
+
     char *arg = strtok(NULL, " \t\n");
     
     if (arg == NULL || !isdigit(arg[0]) || (arg[0] == '-' && !isdigit(arg[1])))
@@ -17,7 +19,7 @@ void push(stack_t **stack, unsigned int line_number)
     }
     
     value = atoi(arg);
-    stack_t *new_node = malloc(sizeof(stack_t));
+    new_node = malloc(sizeof(stack_t));
     if (new_node == NULL)
     {
         fprintf(stderr, "Error: Memory allocation failed\n");
