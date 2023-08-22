@@ -4,7 +4,7 @@
  * @stack: Pointer to the pointer of the stack's head
  * @line_number: Line number in the file
  */
-void push(stack_t **stack, unsigned int line_number)
+void m_push(stack_t **stack, unsigned int line_number)
 {
     int value;
 
