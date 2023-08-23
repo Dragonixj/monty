@@ -40,5 +40,5 @@ typedef struct instruction_s
 
 void m_push(stack_t **stack, unsigned int line_number);
 void m_pall(stack_t **stack, unsigned int line_number);
-
+int execute(char *content, stack_t **stack, unsigned int counter, FILE *file);
 #endif /* MONTY_H */
