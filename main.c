@@ -1,70 +1,106 @@
 #include "monty.h"
+
+
+
+void check(int argc, char *argv[], FILE *file);
+void free_stack(stack_t *head);
 /**
+ * main - check point
+ * Description: read monty file and execute the opcodes
+ * @argc: # arguments
+ * @argv: array of the arguments
  *
- * main: monty code interpretor
- * 
- * Return: returns 0 on sucess
+ * Return: int success status
  */
 
 int main(int argc, char *argv[])
 {
-    /* had to declare here because of compilation problems */
-    char buffer[1024];
-    stack_t *stack;
-    unsigned int line_number;
-    char *opcode;
-    FILE *file;
+	FILE *file = fopen(argv[1], "r");
+	stack_t *stack = NULL;
+	char *line = NULL, *opcode = NULL; 
+	size_t line_length = 0;
+	unsigned int line_number = 1;
+	int i;
+	instruction_t instructions[] = {
+		{"push", push},
+		{"pall", pall}, {NULL, NULL}
+	};
 
-    if (argc != 2)
-    {
-        fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
-        return EXIT_FAILURE;
-    }
 
-    file = fopen(argv[1], "r");
-    if (file == NULL)
-    {
-        fprintf(stderr, "Error: Unable to open file %s\n", argv[1]);
-        return EXIT_FAILURE;
-    }
+	check(argc, argv, file);
 
-    stack = NULL;
-    line_number = 0;
 
-    while (fgets(buffer, sizeof(buffer), file) != NULL)
-    {
-        line_number++;
-        opcode = strtok(buffer, " \t\n");
-
-        if (opcode == NULL)
-            continue;
-
-        if (strcmp(opcode, "push") == 0)
-        {
-            push(&stack, line_number);
-        }
-        else if (strcmp(opcode, "pall") == 0)
-        {
-            pall(&stack, line_number);
-        }
-        /* Add more opcode handlers as needed */
-        else
-        {
-            fprintf(stderr, "L%u: unknown instruction %s\n", line_number, opcode);
-            fclose(file);
-            exit(EXIT_FAILURE);
-        }
-    }
-
-    fclose(file);
-
-    /* Free memory and perform cleanup */
-    while (stack != NULL)
-    {
-        stack_t *temp = stack;
-        stack = stack->next;
-        free(temp);
-    }
-
-    return 0;
+	while (fgets(line, line_length, file) != NULL )
+	{
+		opcode = strtok(line, " \n");
+		if (opcode == NULL || strncmp(opcode, "#", 1) == 0)
+		{
+			line_number++;
+			continue;
+		}
+		/*printf("opcode = %s\n", opcode);*/
+		for (i = 0; instructions[i].opcode != NULL; i++)
+		{
+			if (strcmp(opcode, instructions[i].opcode) == 0)
+			{
+				instructions[i].f(&stack, line_number);
+				break;
+			}
+		}
+		if (instructions[i].opcode == NULL)
+		{
+			fprintf(stderr, "L%d: unknown instruction %s\n", line_number, opcode);
+			exit(EXIT_FAILURE);
+		}
+		line_number++;
+	}
+	free(line); 
+	free_stack(stack);
+	fclose(file); 
+	return (0);
 }
+
+
+/**
+ * free_stack - free the memory that's reserved for stck
+ * @head: atck structure
+ *
+ * Return: void
+ */
+
+void free_stack(stack_t *head)
+{
+	stack_t *next;
+
+	while (head != NULL)
+	{
+		next = head->next;
+		free(head);
+		head = next;
+	}
+}
+
+/**
+ * check - perform checks
+ * @argc: number of args in main
+ * @argv: array of args
+ * @file: monty file pointer, which we read opcodes from
+ *
+ * Return: void
+ */
+void check(int argc, char *argv[], FILE *file)
+{
+	if (argc != 2) 
+	{
+		fprintf(stderr, "USAGE: monty file\n");
+		exit(EXIT_FAILURE);
+	}
+
+	if (file == NULL)
+	{
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+		exit(EXIT_FAILURE);
+	}
+
+}
+
