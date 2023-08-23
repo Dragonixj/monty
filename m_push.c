@@ -4,9 +4,11 @@
  * @stack: Pointer to the pointer of the stack's head
  * @line_number: Line number in the file
  */
-void push(stack_t **stack, unsigned int line_number)
+void m_push(stack_t **stack, unsigned int line_number)
 {
     int value;
+
+    stack_t *new_node;
 
     char *arg = strtok(NULL, " \t\n");
     
@@ -17,7 +19,7 @@ void push(stack_t **stack, unsigned int line_number)
     }
     
     value = atoi(arg);
-    stack_t *new_node = malloc(sizeof(stack_t));
+    new_node = malloc(sizeof(stack_t));
     if (new_node == NULL)
     {
         fprintf(stderr, "Error: Memory allocation failed\n");
