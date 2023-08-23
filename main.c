@@ -6,24 +6,39 @@
  * Return: returns 0 on sucess
  */
 
-int main(void)
+int main(int argc, char *argv[])
 {
-    char *opcode;
-
+    /* had to declare here because of compilation problems */
     char buffer[1024];
-    stack_t *stack = NULL;
-    unsigned int line_number = 0;
-    
-    /* Read input lines until end of file */
-    while (fgets(buffer, sizeof(buffer), stdin) != NULL)
+    stack_t *stack;
+    unsigned int line_number;
+    char *opcode;
+    FILE *file;
+
+    if (argc != 2)
+    {
+        fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
+        return EXIT_FAILURE;
+    }
+
+    file = fopen(argv[1], "r");
+    if (file == NULL)
+    {
+        fprintf(stderr, "Error: Unable to open file %s\n", argv[1]);
+        return EXIT_FAILURE;
+    }
+
+    stack = NULL;
+    line_number = 0;
+
+    while (fgets(buffer, sizeof(buffer), file) != NULL)
     {
         line_number++;
         opcode = strtok(buffer, " \t\n");
-        
+
         if (opcode == NULL)
             continue;
-        
-        /* Compare the opcode and call the corresponding function */
+
         if (strcmp(opcode, "m_push") == 0)
         {
             m_push(&stack, line_number);
@@ -36,10 +51,13 @@ int main(void)
         else
         {
             fprintf(stderr, "L%u: unknown instruction %s\n", line_number, opcode);
+            fclose(file);
             exit(EXIT_FAILURE);
         }
     }
-    
+
+    fclose(file);
+
     /* Free memory and perform cleanup */
     while (stack != NULL)
     {
@@ -47,6 +65,6 @@ int main(void)
         stack = stack->next;
         free(temp);
     }
-    
+
     return 0;
 }
