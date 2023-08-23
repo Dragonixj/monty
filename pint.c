@@ -1,11 +1,9 @@
 #include "monty.h"
 
-
-
 /**
  *pint - function that prints the value at the top of the stack
  *@stack: pointer to linked list 
- *@line_number: line number opcode occurs
+ *@line_number: line number pf the stack
  *
  */
 
