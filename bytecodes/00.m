@@ -1,4 +1,4 @@
-m_push 1
-m_push 2
-m_push 3
-m_pall
+push 1
+push 2
+push 3
+pall

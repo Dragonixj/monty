@@ -39,13 +39,13 @@ int main(int argc, char *argv[])
         if (opcode == NULL)
             continue;
 
-        if (strcmp(opcode, "m_push") == 0)
+        if (strcmp(opcode, "push") == 0)
         {
-            m_push(&stack, line_number);
+            push(&stack, line_number);
         }
-        else if (strcmp(opcode, "m_pall") == 0)
+        else if (strcmp(opcode, "pall") == 0)
         {
-            m_pall(&stack, line_number);
+            pall(&stack, line_number);
         }
         /* Add more opcode handlers as needed */
         else
