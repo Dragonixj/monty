@@ -7,18 +7,15 @@
  * Return: no return value
  */
 
-void m_pall(stack_t **stack, unsigned int line_number){
+void pall(stack_t **stack, unsigned int line_number)
+{
+	stack_t *count;
 
-    stack_t *current;
+	count = *stack;
 
-    (void)line_number; /* introduced just to silence compile warning */
-
-    current = *stack;
-
-    if(current == NULL)
-        return;
-    while(current != NULL){
-        printf("%d\n", current->n);
-        current = current->next;
-    }
+	while (count != NULL)
+	{
+		printf("%d\n", count->n);
+		count = count->next;
+	}
 }
