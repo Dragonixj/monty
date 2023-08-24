@@ -6,8 +6,6 @@
  * @line_number: Line number for error reporting
  *
  * This function removes the top element from the stack.
- * If the stack is empty, an error message is printed.
- * Format for error message: L<line_number>: can't pop an empty stack
  */
 
 void pop(stack_t **stack, unsigned int line_number)
