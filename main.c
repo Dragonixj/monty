@@ -55,7 +55,11 @@ int main(int argc, char *argv[])
 	{
             pop(&stack, line_number);
 	}
-        else
+        else if(strcmp(opcode, "swap") == 0)
+        {
+            swap(&stack, line_number);
+        }
+	else
         {
             fprintf(stderr, "L%u: unknown instruction %s\n", line_number, opcode);
             fclose(file);
